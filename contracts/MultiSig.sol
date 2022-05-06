@@ -24,7 +24,12 @@ contract MultiSig {
     bytes32 public constant EXECUTE_TYPEHASH = 
         keccak256('Execute(address to,uint256 value,bytes data,uint256 nonce)');
 
+     bytes32 public constant ADDSIGNER_TYPEHASH = 
+        keccak256('AddSigners(address newSigner,bool shouldTrust,uint256 nonce');
+
     //EVENTS
+
+    event Executed(address to, uint256 valueEth, bytes data, address previousLoop);
 
 
     //MODIFERS
@@ -57,12 +62,11 @@ contract MultiSig {
 
         }
 
-
     function execute(
         address payable to, 
-        uint256 value, 
         bytes calldata data,
-        Signatures[] memory sigsVRS
+        Signatures[] memory sigsVRS,
+        uint256 value
     ) public payable {
         require(isSigner[msg.sender]);
 
@@ -77,8 +81,42 @@ contract MultiSig {
 
         for (uint256 i = 0; i < numberOfSignatures; i++) {
             address currentLoopAddress = ecrecover(hash, sigsVRS[i].v, sigsVRS[i].r, sigsVRS[i].s);
+            
+            require(!isSigner[currentLoopAddress] || previousLoopAddress >= currentLoopAddress, "not valid address");
+
+            previousLoopAddress = currentLoopAddress;
         }
-        
+    emit Executed(to, value, data, previousLoopAddress);
+    
+    (bool success, ) = to.call{ value: msg.value}("");
+    require(success, "execute failed to transact");
     }
+
+    function addSigners(
+        address newSigner,
+        Signatures[] memory sigsVRS
+    ) public payable {
+        require(isSigner[msg.sender]);
+        require(!isSigner[newSigner], "This address is already a Signer");
+
+        bytes32 hash = keccak256(
+            abi.encodePacked(
+                '\x19\x01',
+                domainSepartor,
+                keccak256(abi.encode(arg);)
+            );
+        )
+
+
+
+    }
+
+    function addSignatures() public {}
+
+     function getBalance(address ethAddress) public view returns (uint256) {
+        return ethAddress.balance;
+    }
+
+    receive() external payable {}
 
 }
