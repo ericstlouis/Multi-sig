@@ -1,12 +1,15 @@
-
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Login = () => {
   return (
-    <button>
-      <h1>button</h1>
-    </button>
+    <div className="flex justify-between p-3 ">
+      <h1 className='text-3xl'>MultiSig</h1>
+      <ConnectButton />
+    </div>
   );
 };
 
 export default Login;
+
+
 

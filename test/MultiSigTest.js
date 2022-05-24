@@ -95,7 +95,7 @@ describe("intialized MultiSig", function () {
         let SigArray = new Array(v, r, s);
         newArray.push(SigArray);
       }
-    }
+    } 
     // console.log("newArray:", newArray)
 
     const firstBalance = await MultiSig.getBalance(alice.address);
