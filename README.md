@@ -1,15 +1,7 @@
-# Basic Sample Hardhat Project
+# MULTI-SIG
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+> A Multisig based on the EIP-712 STANDARD 
 
-Try running some of the following tasks:
+Allows users to Sign typed data, add signatures and execute transaction
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+

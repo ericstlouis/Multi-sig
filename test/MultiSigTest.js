@@ -100,15 +100,16 @@ describe("intialized MultiSig", function () {
 
     const firstBalance = await MultiSig.getBalance(alice.address);
     firstFormatBalance = ethers.utils.formatEther(firstBalance);
-    console.log('pre-balance:', firstFormatBalance);
+    console.log('pre execution balance:', firstFormatBalance);
 
     const executeTX = await MultiSig.execute(alice.address, data, newArray, 1, {
       value: ethers.utils.parseEther('1.0'),
     });
+    console.log("---------------------executing transaction sending 1 ETH-----------------------")
 
     const secondBalance = await MultiSig.getBalance(alice.address);
     secondFormatBalance = ethers.utils.formatEther(secondBalance);
-    console.log('post-balance:', secondFormatBalance);
+    console.log('post execution balance:', secondFormatBalance);
   });
 
   it('Add signers', async function () {
@@ -187,18 +188,21 @@ describe("intialized MultiSig", function () {
     }
 
     const firstAddressTrue = await MultiSig.isSigner(alice.address);
-    console.log(firstAddressTrue);
+    const amountOfSignerPre = await MultiSig.numberOfSignatures();
+    console.log("amount of signers before transaction:", amountOfSignerPre.toNumber());
+    console.log("checking if alice is a signer before transaction", firstAddressTrue);
+    
+    console.log("-------------------adding alice as a signer----------------------")
 
     const firstSignature = await MultiSig.numberOfSignatures();
-    console.log(firstSignature)
     const executeTx = await MultiSig.addSigners(alice.address, true, newArray, {value: ethers.utils.parseEther("1.0")})
-    const secondSignature = await MultiSig.numberOfSignatures();
-    console.log(secondSignature)
 
     const secondAddressTrue = await MultiSig.isSigner(alice.address);
-    console.log(secondAddressTrue)
+    console.log("checking if alice is a signer after transaction", secondAddressTrue)
   });
 });
+
+
 
 
 
